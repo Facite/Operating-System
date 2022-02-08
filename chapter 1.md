@@ -82,7 +82,7 @@ ___
 
 ##### Diagramatic representation of flow of control
 + OS ----> Device Driver ----> Device Controller -----> Device 
-+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |-------------------> Local Buffer Storage
++ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |---------------> Local Buffer Storage
 
 
 #### 1.2.1 Interrupts
@@ -92,4 +92,4 @@ ___
 	+ The device controller starts the transfer of data from the device (keyboard) to its local buffer.
 	+ The device controller informs the device driver when it has finished the operation.
 	+ The device driver then gives control to other parts of the OS (Returns the data read from keyboard).
-+ The device controller informs the device driver  
++ The device controller informs the device driver that it has finished its operation with the help of interrupts. 
