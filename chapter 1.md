@@ -12,6 +12,7 @@
 	+ 1.2.1.1 [Overview of Interrupts](#1211-overview-of-interrupts)
 	+ 1.2.1.2 [Implementation of Interrupts](#1212-implementation-of-interrupts)
 + 1.2.2 [Storage Structure](#122-storage-structure)
++ 1.2.3 [I/O Sructure](#123-io-structure)
 
 
 ___
@@ -154,9 +155,24 @@ ___
 <!--Empty Heading--> 
 
 #### 1.2.2 Storage Structure
++ The access time, distance from CPU, and the storage size usually increase as we go from the top to the bottom of the table.
++ Mechanical storage is generally larger and less-expensive-per-byte than electrical storage. 
++ Electrical storage is typically faster than mechanical storage.
++ Computers also use ROM to run the power-on bootstrap program, which loads the OS from the secondary-memory to the main one. 
 
+| Name                   | Volitality   | Storage level  | Storage type |
+|------------------------|--------------|----------------|--------------|
+| Registers              | Volatile     | Primary        | Electronic   |           
+| Cache                  | Volatile     | Primary        | Electronic   |
+| Main Memory (RAM)      | Volatile     | Primary        | Electronic   |
+| SDD/Flash memory       | Non-volatile | Secondary      | Electronic   |
+| Hard Disk (HDD)        | Non-volatile | Secondary      | Mechcanical  |
+| Optical Disk (CD/DVD)  | Non-volatile | Tertiary       | Mechcanical  |
+| Magnetic Tapes         | Non-volatile | Tertiary       | Mechcanical  |
 
+#     
+<!--Empty Heading--> 
 
-
+#### 1.2.3 I/O Structure
 
 
