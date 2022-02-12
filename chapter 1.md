@@ -156,9 +156,7 @@ ___
 
 #### 1.2.2 Storage Structure
 + The access time, distance from CPU, and the storage size usually increase as we go from the top to the bottom of the table.
-+ Mechanical storage is generally larger and less-expensive-per-byte than electrical storage. 
-+ Electrical storage is typically faster than mechanical storage.
-+ Computers also use ROM to run the power-on bootstrap program, which loads the OS from the secondary-memory to the main one. 
++ Apart from the storage medias listed, computers also use ROM. It is used to run the power-on bootstrap program, which loads the OS from the secondary memory to the primary memory. 
 
 | Name                   | Volitality   | Storage level  | Storage type |
 |------------------------|--------------|----------------|--------------|
@@ -166,9 +164,23 @@ ___
 | Cache                  | Volatile     | Primary        | Electronic   |
 | Main Memory (RAM)      | Volatile     | Primary        | Electronic   |
 | SDD/Flash memory       | Non-volatile | Secondary      | Electronic   |
-| Hard Disk (HDD)        | Non-volatile | Secondary      | Mechcanical  |
-| Optical Disk (CD/DVD)  | Non-volatile | Tertiary       | Mechcanical  |
-| Magnetic Tapes         | Non-volatile | Tertiary       | Mechcanical  |
+| Hard Disk (HDD)        | Non-volatile | Secondary      | Mechanical   |
+| Optical Disk (CD/DVD)  | Non-volatile | Tertiary       | Mechanical   |
+| Magnetic Tapes         | Non-volatile | Tertiary       | Mechanical   |
+
+##### Volitality
++ Volatile storage loses its contents when the computer is powered off. 
++ Non-volatile storage retains data even when the system is powerd off.
+
+##### Storage levels
++ Primary memory is volatile in nature and acts as the working space for the processor, which accesses it directly. 
++ Secondary memory is used to hold data on a more permanent basis. When the processor needs data that is present in the secondary memory, it is first loaded in the primary memory. 
++ Tertiary memory are storage medias that are so large and slow that they are mostly used for special purposes, like storing backup copies.  
+
+##### Storage types
++ Mechanical storage is generally larger and less-expensive-per-byte than electrical storage. 
++ Electrical storage is typically faster than mechanical storage.
+
 
 #     
 <!--Empty Heading--> 
