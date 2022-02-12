@@ -9,6 +9,9 @@
 
 ###### 1.2 [Computer-Systems Organization](#12-computer-system-organization)
 + 1.2.1 [Interrupts](#121-interrupts)
+	+ 1.2.1.1 [Overview of Interrupts](#1211-overview-of-interrupts)
+	+ 1.2.1.2 [Implementation of Interrupts](#1212-implementation-of-interrupts)
++ 1.2.2 [Storage Structure](#122-storage-structure)
 
 
 ___
@@ -84,6 +87,8 @@ ___
 + OS ----> Device Driver ----> Device Controller -----> Device 
 + &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |---------------> Local Buffer Storage
 
+#     
+<!--Empty Heading--> 
 
 #### 1.2.1 Interrupts
 + Consider a typical I/O operation (Eg: to read input from keyboard):
@@ -93,3 +98,65 @@ ___
 	+ The device controller informs the device driver when it has finished the operation.
 	+ The device driver then gives control to other parts of the OS (Returns the data read from keyboard).
 + The device controller informs the device driver that it has finished its operation with the help of interrupts. 
+
+#     
+<!--Empty Heading--> 
+
+##### 1.2.1.1 Overview of Interrupts
++ Interrupts must be handled quickly as they occur very frequently.
++ The interrupt architecture must also save the state information of whatever was interrupted, so that it can be restored after the interrupt is serviced.
++ Interrupts are a key part of how the OS and the hardware interact.
+	+ Hardware may trigger an interrupt at any time by sending a signal to the CPU (usually through the system bus).
+	+ When the CPU is interrupted, it stops what it is doing and immediately transfers execution to the starting address of the service routine for the interrupt.
+	+ A simple way to do that is to invoke a generic routine that examines the interrupt information, based on which the generic routine calls the interrupt-specific routine.
+	+ A faster way to do the same is to use **interrupt vectors**. 
+		+ They are a table of pointers to the various interrupt service routines.
+		+ The specific interrupt routine needed to be exectued for a given interrupt is called indirectly through the table, without any other intermediate routine being used.
+		+ This table is generally stored in low memory (the first hundred or so locations).
+		+ Windows and UNIX use this mechanism to dispatch interrupts.  
+	+ After the interrupt service routine is completed, the CPU resumes the interrupted computation.
+
+#     
+<!--Empty Heading--> 
+
+##### 1.2.1.2 Implementation of Interrupts
+
+##### Basic interrupt mechanism
++ CPU hardware has a wire called the **interrupt-request line**, which is senses after executing every instruction to check if a device controller has **raised an interrupt** on it.
++ When the CPU **catches an interrupt**, it uses the interrupt number as an index into the **interrupt-vector**. 
++ Using the vector table, it calls the required **interrupt-handler routine** and **dispathes the interrupt** to that handler.
++ The interrupt-handler routine **clears the interrupt** by:
+	+ Saving the states that it will be changing during its operation.
+	+ Determining the cause of the interrupt. 
+	+ Performing the necessary processing and servicing the device that raised the interrpt. 
+	+ Performing a state restore and returning the CPU to the execution state it was in prior to the interrupt.
+
+##### Problems with the basic interrupt mechanism
++ In modern computers, we need more sophesticated features like:
+	+ Ability to defer interrupt handling during crital processing.
+	+ A more efficient way to dispatch the proper interrupt handler for a device. 
+	+ Different levels of interrupts, so that the OS can respond to them with the appropriate degree of urgency.
+
+##### Implementing the features
++ Using **two interrupt lines**:
+	+ The non-maskable interrupt line which is reserved for interrupts that the system cannot ignore.
+	+ The maskable interrupt line which can be turned off the CPU while in critical processing.
++ Using **interrupt chaining** as a hybrid approach to dipatch the proper interrupt handler: 
+	+ Usually computers have more interrupt-handlers than they have address elements in the vector-table.
+	+ So each element in the interrupt vector table points to the head of a list of interrupt handlers (instead of one).
+	+ When an interrupt is raised, all the handlers on the corresponding list are called one by one, until one is found that can service the request.  
+	+ This is a compromise solution between the overhead of a huge interrupt table and the inefficiency of using a generic interrupt routine.
++ Using a system of **interrupt priority levels**:
+	+ The levels enable the CPU to defer the handling of low-priority interrupts without masking all interrupts.
+	+ It also makes it possible for a high-priority interrupt to preempt the execution of a low-priority interrupt.
+
+#     
+<!--Empty Heading--> 
+
+#### 1.2.2 Storage Structure
+
+
+
+
+
+
