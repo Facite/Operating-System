@@ -85,8 +85,9 @@ ___
 	+ A memory controller synchronizes access to the memory to ensure orderly access to the shared memory.
 
 ##### Diagramatic representation of flow of control
-+ OS ----> Device Driver ----> Device Controller -----> Device 
-+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |---------------> Local Buffer Storage
++ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; || 
++ OS ----> Device Driver ----> Device Controller -----> I/O Device 
++ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; || &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |---------> Local Buffer Storage
 
 #     
 <!--Empty Heading--> 
@@ -163,7 +164,7 @@ ___
 | Registers              | Volatile     | Primary        | Electronic   |           
 | Cache                  | Volatile     | Primary        | Electronic   |
 | Main Memory (RAM)      | Volatile     | Primary        | Electronic   |
-| SDD/Flash memory       | Non-volatile | Secondary      | Electronic   |
+| SSD/Flash memory       | Non-volatile | Secondary      | Electronic   |
 | Hard Disk (HDD)        | Non-volatile | Secondary      | Mechanical   |
 | Optical Disk (CD/DVD)  | Non-volatile | Tertiary       | Mechanical   |
 | Magnetic Tapes         | Non-volatile | Tertiary       | Mechanical   |
@@ -186,5 +187,12 @@ ___
 <!--Empty Heading--> 
 
 #### 1.2.3 I/O Structure
++ A large portion of the OS is dedicated to managing the I/O.
++ The interrupt-driven I/O described in [Section 1.2.1](#121-interrupts) is fine for moving small amounts of data, but can produce high overload when large amounts of data is involved.
++ **Direct Memory Access (DMA)** is used to solve this problem.
+	+ The device controller itself transfers an entire block of data directly in between its I/O device and main memory, with no intervention by the CPU. 
+	+ Only one interrupt is generated per block, to tell the device driver that the operation has completed (instead of generating one interrupt per byte).
+	+ While the device controller is performing these operations, the CPU is available for other work.
 
+___
 
