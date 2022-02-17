@@ -14,6 +14,10 @@
 + 1.2.2 [Storage Structure](#122-storage-structure)
 + 1.2.3 [I/O Sructure](#123-io-structure)
 
+###### 1.3 [Computer System Architectures](#13-computer-system-architecture)
++ 1.3.1 [Single-Processor Systems](#131-single-processor-systems) 
++ 1.3.2 [Multiprocessor Systems](#132-multiprocessor-systems)
++ 1.3.3 [Clustered Systems](#133-clustered-systems)
 
 ___
 
@@ -195,4 +199,73 @@ ___
 	+ While the device controller is performing these operations, the CPU is available for other work.
 
 ___
+
+
+### 1.3 Computer-System Architecture
+
+#### 1.3.1 Single-Processor Systems 
++ A core is the processing-unit component of the CPU. It executes instructions and registers for storing data locally. 
++ Years ago, most of the computers had a simple CPU and a single core. 
++ This core was capable of executing a general-purpose instruction set, including instructions from processes.
+
+##### Special-purpose processors
++ Those single-core processor CPUs had device-specific special-purpose processors as well (for disk, keyboard, graphics, etc).
++ These special-purpose processors can only run a limited instruction set and can't run other processes. For example:
+	+ A disk-controller microprocessor would recieve a sequence of requests from the main CPU core. 
+	+ Then it implements its own disk queue and scheduling algorithm. 
+	+ This way, the main CPU is relieved of the overhead of disk scheduling.
++ Sometimes, the special-purpose processors are low-level components built into the hardware. The OS can't communicate with them directly and they do their jobs autonomously. For example: 
+	+ PCs contain a microprocessor in the keyboard to convert the keystrokes into codes to be sent to the CPU.
++ The use of special-purpose microprocessors is common, and does not turn a single-general-purpose-CPU-with-a-single-processing-core system into a multiprocessor system.
+
+#     
+<!--Empty Heading--> 
+
+#### 1.3.2 Multiprocessor Systems
++ Multiprocessor systems dominate the computing landscape - from mobile deives to servers. 
++ Their main advantage is the increased throughput. 
+
+##### Systems with Multiple Single-Core Processors
++ The processors share resources like the computer bus, the clock, the memory, etc.
++ The speed-up ratio with N processors is not N, because 
+	+ Certain overhead is incurred in communication between the processors, and
+	+ Contention for shared resources adds to the lowering of expected gain.
+
+##### Symmetric Multiprocessing structure
++ Multiprocessor systems most commonly use symmetric multiprocessing (SMP), where
+	+ Each processor performs all tasks, including operating-system functions and user processes. 
+	+ Each processor has its own set of registers, as well as a private (or local) cache. 
+	+ All processors share the physical memory over the system bus.
+	+ As the processors are separate, one may be sitting idle while another is overloaded, resulting in inefficiencies.
+	+ To lower the workload variance between processors, dynamic sharing of processes and resources among the various processors can be implemented.
+
+##### Systems with a Single Multi-Core Processor
++ Multicore systems can be more efficient than systems with multiple single-core processors, as on-chip communication is faster than between-chip communication.
++ Additionally, one-chip-with-multiple-cores uses significantly less power than multiple-single-core-chips (an important issue for mobiles and laptops).
++ Most multi-core systems have the design where:
+	+ Each core has its own registers and a local cache (often known the level 1 or L1 cache).
+	+ The processor has level 2 (or L2 cache) that is shared by all the cores on the processor.
+	+ The local lower-level caches are generally smaller and faster than the higher-level shared caches.
++ All major modern OS (including Windows, macOS, Linux, Android, and iOS) support multicore SMP systems.
++ As per [wiki](https://en.wikipedia.org/wiki/Symmetric_multiprocessing), "In the case of multi-core processors, the SMP architecture applies to the cores, treating them as separate processors."
+
+##### Non-Uniform Memory Access structure
++ As mentioned earlier, adding additional cores/processors doesn't scale well after a point because contention for the system bus becomes the bottleneck.
++ A solution to that is to use the NUMA structure, where: 
+	+ Each CPU (or group of CPU) is provided with their own memory, that they can access via a smaller and faster local bus. 
+	+ The CPUs are connected together by a **shared system interconnect** (so all CPUs share one physical address space). 
++ As a CPU can access its memory fast and without any contention on the system interconnect, NUMA systems can scale more effectively. 
++ A drawback with a NUMA system is the increased latency when a CPU needs to access memory across the system interconnect. The OS tries to minimize this latency through careful CPU scheduling and memory management.
++ As NUMA systems can scale to accommodate a large number of processors, they are becoming increasingly popular on servers and high-performance computing systems. 
+
+##### Blade Servers structure
++ These are systems in which multiple processor boards, I/O boards, and networking boards are placed in the same chassis.
++ Each blade processor board boots independently and runs its own operating system. 
++ Some blade-server boards are multiprocessor as well, which blurs the lines between types of computers, as these servers consist of multiple independent multiprocessor systems.
+
+#     
+<!--Empty Heading--> 
+
+#### 1.3.3 Clustered Systems 
+
 
