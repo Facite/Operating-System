@@ -19,6 +19,7 @@
 + 1.3.2 [Multiprocessor Systems](#132-multiprocessor-systems)
 + 1.3.3 [Clustered Systems](#133-clustered-systems)
 
+###### 1.4 [Operating System Operation](#14-operating-system-operations)
 ___
 
 ### 1.1 What operating systems do?
@@ -224,6 +225,9 @@ ___
 #### 1.3.2 Multiprocessor Systems
 + Multiprocessor systems dominate the computing landscape - from mobile deives to servers. 
 + Their main advantage is the increased throughput. 
++ They can broadly be categorised in two types:
+	+ Systems with multiple single-core processors.
+	+ Systems with multiple cores on a single processor. 
 
 ##### Systems with Multiple Single-Core Processors
 + The processors share resources like the computer bus, the clock, the memory, etc.
@@ -267,5 +271,55 @@ ___
 <!--Empty Heading--> 
 
 #### 1.3.3 Clustered Systems 
++ Clustured systems can be thought of as another type of multiprocessor system.
++ They consist of two or more individual systems (or nodes) joined together. 
+	+ Each node is typically a multicore system in itself.
+	+ The nodes are said to be **loosely coupled**.
++ The generally accepted definition is that clustered computers share storage and are closely linked (using LAN or a faster interconnect).
+
+##### Clustering for providing high availability services
++ High avalibility services are services which continue even after one or more systems in the cluster fail. 
++ This is done by adding a level of redundancy in the system.
+	+ A "cluster" software runs on each node which monitors one or more of the other nodes.
+	+ If/when a monitored node fails, the monitoring node takes ownership of its storage and restarts the applications that were running on the failed machine.
+	+ The users of the service only expeirence a brief interruption of service instead of facing an outage.
+	+ This way, high avalibality provides increased reliability.
++ The ability to continue functioning proportional to the surviving hardware is called **graceful degredation**.
+	+ **Fault tolerant** systems can suffer failure of any single component and still continue operation. 
+	+ They employ a mechanism that allows the system to detect, diagnose, and possibly correct the failure.
++ Clustering can be structured asymmetrically or symmetrically.
+	+ **Asymmetric Clustering**:
+		+ One node runs the application while the other remains in a **hot stand-by mode**. 
+		+ The hot stand-by node just monitors the active server.
+		+ When the active server fails, the stand-by node takes over and becomes the active server.
+	+ **Symmetric Clustering**:
+		+ Two are more hosts, all of them running applications. 
+		+ They monitor each other and when one node goes down, the monitoring node takes over.
+		+ It is more efficient as it utilizes the avaliable hardware better.
+
+##### Clustering for provinding high performace computing
++ As clusters are several computer systems connected via a high-speed network, they can be used to provide high-performance computing environments.
++ Clusters can provide a significantly higher amount of computational power as compared to single-processor or SMP multiprocessor systems, because they can run different parts of an application concurrently on their systems. 
++ However, the application must specifically be written in a way to take advantage of the cluster.
+	+ This involves a technique called **parallelization**.
+	+ With the help of parellalization, the original problem is divided into separate components.
+	+ Each of the components are then run parallely on individual cores of a computer or on individual computers of a cluster.
+	+ The results from all the nodes are later combined to form the final answer.
+
+##### Clustering for simultaneous data access
++ Another form of clustering is **parallel clustering** - which allows multiple hosts to access the same data on a shared storage.
++ Most OS lack support for simultaneous data access by multiple hosts, hence parallel clusters usually require special versions of softwares.
++ For example, "Oracle Real Application Cluster" is a version of Oracle’s database that has been designed to run on a parallel cluster.
+	+ Each machine runs Oracle and has full access to the data on the shared database. 
+	+ The software tracks access to the shared disk (access control).
+	+ It also provides a locking mechanism to ensure that no conflicting operations occur (distributed lock manager).
++ Cluster technology is changing rapidly, and with fast WANs, some cluster products support nodes that are separated by miles. 
++ The concepts of **Storage Area Networks (SAN)** is helpful in the advancements. 
+	+ In SAN, many systems attach to the same pool of storage. 
+	+ If the applications and their data is in the SAN, then the cluster software can assign any host connected to the SAN to run an application.
+	+ In a database cluster, dozens of hosts sharing the same database greatly increases performance and reliability.
+
+___
 
 
+### 1.4 Operating System Operations 
