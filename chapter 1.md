@@ -17,9 +17,17 @@
 ###### 1.3 [Computer System Architectures](#13-computer-system-architecture)
 + 1.3.1 [Single-Processor Systems](#131-single-processor-systems) 
 + 1.3.2 [Multiprocessor Systems](#132-multiprocessor-systems)
+	+ [Systems with multiple single-core processors](#systems-with-multiple-single-core-processors)
+	+ [Systems with a single multi-core processor](#systems-with-a-single-multi-core-processor)
+	+ [Multiprocessor structures](#) ([SMA](#symmetric-multiprocessing-structure-sma), [NUMA](#non-uniform-memory-access-structure-numa), [Blade](#blade-servers-structure)) 
 + 1.3.3 [Clustered Systems](#133-clustered-systems)
+	+ [Clustering for high-availablility services](#clustering-for-providing-high-availability-services)
+	+ [Clustering for high-performance computing](#clustering-for-provinding-high-performace-computing)
+	+ [Clustering for simultaneous data access](#clustering-for-simultaneous-data-access)
 
 ###### 1.4 [Operating System Operation](#14-operating-system-operations)
++ 1.4.1 [Multiprogramming and Multitasking](#141-multiprogramming-and-multitasking)
++ 1.4.2 [Dual-mode and Multimode Operation](#142-dual-mode-and-multimode-operation)
 ___
 
 ### 1.1 What operating systems do?
@@ -235,7 +243,7 @@ ___
 	+ Certain overhead is incurred in communication between the processors, and
 	+ Contention for shared resources adds to the lowering of expected gain.
 
-##### Symmetric Multiprocessing structure
+##### Symmetric Multiprocessing structure (SMA)
 + Multiprocessor systems most commonly use symmetric multiprocessing (SMP), where
 	+ Each processor performs all tasks, including operating-system functions and user processes. 
 	+ Each processor has its own set of registers, as well as a private (or local) cache. 
@@ -253,7 +261,7 @@ ___
 + All major modern OS (including Windows, macOS, Linux, Android, and iOS) support multicore SMP systems.
 + As per [wiki](https://en.wikipedia.org/wiki/Symmetric_multiprocessing), "In the case of multi-core processors, the SMP architecture applies to the cores, treating them as separate processors."
 
-##### Non-Uniform Memory Access structure
+##### Non-Uniform Memory Access structure (NUMA)
 + As mentioned earlier, adding additional cores/processors doesn't scale well after a point because contention for the system bus becomes the bottleneck.
 + A solution to that is to use the NUMA structure, where: 
 	+ Each CPU (or group of CPU) is provided with their own memory, that they can access via a smaller and faster local bus. 
@@ -323,3 +331,47 @@ ___
 
 
 ### 1.4 Operating System Operations 
++ A bootstrap program is a simple program, typically stored within the computers hardware (in firmware), that kick starts the powering up of the computer.
+	+ The bootstrap program initializes the system (CPU registers, device controllers, memory contents).
+	+ It locates the operating-system kernel and loads it to the memory.
+	+ It starts the execution of the OS.
++ Once the kernel is executing, it can start providing services to the system and its users. 
++ Some services are provided outside of the kernel by system programs that are loaded into memory at boot time (system daemons), which run the entire time the kernel is running. 
++ Once this phase is complete, the system is fully booted, and the system waits for some event to occur.
++ Events are almost always signaled by the occurrence of an interrupt.
+	+ In [Section 1.2.1](#121-interrupts), we looked at hardware interrupts.
+	+ Another form of interrupt is a "trap" or an "exception", which is a software generated interrupt caused either by an error (division by zero), or by a request from a user program that an OS service be performed by executing am operation called a "system call".
+
+#     
+<!--Empty Heading--> 
+
+#### 1.4.1 Multiprogramming and Multitasking
+
+##### Multiprogramming
++ Multiprogramming increases CPU utilization and allows the user to run more than one application at a time.
++ The OS keeps several processes in the memory simultaneously.
++ The OS executes one process, until the process has to wait for some task (like in I/O operation).
++ In a non-multprogammed system, the CPU would sit idle and wait for the task to get completed.
++ In a multi-programmed system, the OS switches to another process and executes that. 
+	+ If that processes needs to wait, the CPU switches to another one and so on. 
+	+ Eventually the task of the original one gets completed and it gets the CPU back.
++ The CPU is never idle in the multi-programmed system (as long as there is atleast one process in the queue that needs to be executed).
+
+##### Multitasking
++ Multitasking is the extension of multi-programming. 
++ In this, the CPU executes multiple processes by switching among them (the switches occur frequently every time quantum).
++ This provides the user with a fast response time.
+
+##### Mechanisms required for multiprogramming and multitasking systems
++ Having several processes in the memory simultaneously requires **memory management**.
++ **CPU scheduling** is required to determine which process should be executed next.
++ We also need mechanisms in place so that the processes do not affect each others' states.
++ Another crucial compoment is a **file system**, that typically resides in the secondary storage.
++ Hence **Storage management** is important too.
++ To ensure orderly execution of processes, we need mechanisms for **process syncronization and communication**, and **managing deadlocks**.
++ To better the response time, a common method is to use **virtual memory**, that allows the execution of a process that has not yet been completely loaded in the memory.  
+
+#     
+<!--Empty Heading--> 
+
+#### 1.4.2 Dual-mode and Multimode Operation
