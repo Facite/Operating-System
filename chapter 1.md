@@ -28,6 +28,7 @@
 ###### 1.4 [Operating System Operation](#14-operating-system-operations)
 + 1.4.1 [Multiprogramming and Multitasking](#141-multiprogramming-and-multitasking)
 + 1.4.2 [Dual-mode and Multimode Operation](#142-dual-mode-and-multimode-operation)
++ 1.4.3 [Timer](#143-timer)
 ___
 
 ### 1.1 What operating systems do?
@@ -340,7 +341,7 @@ ___
 + Once this phase is complete, the system is fully booted, and the system waits for some event to occur.
 + Events are almost always signaled by the occurrence of an interrupt.
 	+ In [Section 1.2.1](#121-interrupts), we looked at hardware interrupts.
-	+ Another form of interrupt is a "trap" or an "exception", which is a software generated interrupt caused either by an error (division by zero), or by a request from a user program that an OS service be performed by executing am operation called a "system call".
+	+ Another form of interrupt is a "trap" or an "exception", which is a software generated interrupt caused either by an error (division by zero), or by a request from a user program that an OS service is be performed by executing an operation called a "system call".
 
 #     
 <!--Empty Heading--> 
@@ -375,3 +376,49 @@ ___
 <!--Empty Heading--> 
 
 #### 1.4.2 Dual-mode and Multimode Operation
++ OS supports two modes of performing operations:
+	+ Kernel mode (also called supervisor/system/priviliged mode)
+	+ User mode
++ The **mode-bit** is used to distinguish if a task is to be executed on behalf of the OS or the user (kernel=0, user=1).
++ The dual mode of operation provides us with the means for protecting the OS from errant users, and errant users from one another. 
+	+ This is achieved by designating some of the crucial machine instructions as **privileged instructions**, that can only be executed in the kernel mode.
+	+ Some previliged instructions are - switching to kernel mode, I/O control, timer management, interrupt management, etc.
+
+##### Example of the system switching between the two modes: 
++ At system boot time, the hardware starts in kernel mode and loads the OS. 
++ The OS starts user applications in user mode. 
++ Whenever an interrupt or a trap or a system call occurs, the hardware switches from user mode to kernel mode. 
++ System calls provide the user programs to ask the OS to perform tasks reserved for the OS on the user program's behalf.
+	+ A system call usually takes the form of a trap to a specific location in the interrupt vector.
+	+ When a system call is executed, it is typically treated by the hardware as a software interrupt.
++ Either way, whenever the OS gains control, the computer is in kernel mode. 
++ The system always switches to user mode before passing control to back to a user program.
+
+##### How dual modes offer protection
++ Once this dual mode mechanism is in place, it detects errors that violate modes.
++ If a user program attempts to execute an illegal instruction or access memory that is not in the user’s address space, then the hardware traps to the OS. 
++ The OS then terminates the program abnormally. This situation is handled by the same code as a user-requested abnormal termination. 
++ An appropriate error message is given, and the memory of the program may be dumped to a file so that the user can examine it.
+
+##### Multimode systems
++ The concept of modes can be extended to accommodate for various levels of previliges.
+	+ Intel processors have 4 **protection rings** (where ring 0 is kernel mode and ring 3 is user mode).
+	+ ARM systems have 7 modes.
++ CPUs that support virtualization usually have a separate mode to indicate when the **virual machine manager (VMM)** is in control of the system.
+	+ VMM has more privilages than the user mode but fewer than the kernel mode.
+	+ It needs more privilige than the user mode so that it can create/manage virtual machines.
+
+#     
+<!--Empty Heading--> 
+
+#### 1.4.3 Timer
++ It is crucial that the OS maintains control over the CPU. 
++ We need to have a mechanism in place to make sure that control returns to the OS even when a user program gets stuck.
++ For this, we can use a timer, which can be set to raise an interrupt after a specified period.
+	+ Before turning over control to the user, the OS ensures that the timer is set to interrupt. 
+	+ If the timer interrupts, control transfers automatically back to the OS, which may treat the interrupt as a fatal error or may give the program more time. 
++ Instructions that modify the content of the timer are privileged.
+
+___
+
+
